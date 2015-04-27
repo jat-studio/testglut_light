@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="testglut" />
+		<Option title="testglut_light" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/testglut" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/testglut_light" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="/usr/bin" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -17,7 +17,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/testglut" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/testglut_light" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="/usr/bin" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
@@ -32,7 +32,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-lil" />
 			<Add directory="/usr/include" />
 		</Compiler>
 		<Linker>
@@ -43,8 +42,6 @@
 			<Add library="IL" />
 			<Add library="ILU" />
 			<Add directory="/usr/lib" />
-			<Add directory="/usr/lib/x86_64-linux-gnu" />
-			<Add directory="/usr/lib64" />
 		</Linker>
 		<Unit filename="main.cpp" />
 		<Extensions>

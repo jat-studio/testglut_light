@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1429093802 source:/home/jatstudio/Projects/testglut/main.cpp
+1429771404 source:/home/jatstudio/Projects/testglut_light/main.cpp
 	<GL/glut.h>
 	<IL/il.h>
 	<IL/ilu.h>
@@ -152,18 +152,6 @@
 	<bits/posix1_lim.h>
 	<bits/posix2_lim.h>
 	<bits/xopen_lim.h>
-
-1428921481 /usr/include/GL/glew.h
-	<stddef.h>
-	<inttypes.h>
-	<stdint.h>
-	<inttypes.h>
-	<Availability.h>
-	<OpenGL/glu.h>
-	<GL/glu.h>
-
-1429080440 /usr/include/IL/texture.h
-	<IL/il.h>
 
 1387209253 /usr/include/IL/ilu.h
 	<IL/il.h>

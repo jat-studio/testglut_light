@@ -4,7 +4,18 @@
 
 GLfloat rAngle = 0;         // rotation angle of object
 
-GLuint  IndexTexture[1];    // index of texture
+GLuint  FilterTexture;      // filter of texture
+GLuint  IndexTexture[3];    // index of texture
+
+bool    keys[256];          // keys of keyboard
+bool    active = true;      // application activity
+bool    fullscreen = true;
+bool    light;              // lights on or off
+bool    Lb;                 // pressed or not "L" button
+bool    Fb;                 // pressed or not "F" button
+GLfloat LightAmbient[] = {0.5, 0.5, 0.5, 1.0}; // array of ambient light
+GLfloat LightDiffuse[] = {1.0, 1.0, 1.0, 1.0}; // array of diffuse light
+GLfloat LightPosition[] = {0.5, 0.5, 0.5, 1.0}; // coordinates of light source
 
 void LoadTexture(const char* texName){
   // initializing il and ilu library
@@ -39,13 +50,22 @@ void LoadTexture(const char* texName){
       type = GL_RGBA;
       break;
   }
-  // loading texture into memory
-  glGenTextures(1, &IndexTexture[0]);
+  // loading textures into memory
+  glGenTextures(3, &IndexTexture[0]);
+  // texture with filter on neighboring pixels
   glBindTexture(GL_TEXTURE_2D, IndexTexture[0]);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  gluBuild2DMipmaps(GL_TEXTURE_2D, bpp, width, height, type, GL_UNSIGNED_BYTE, data);
+  // texture with linear filter
+  glBindTexture(GL_TEXTURE_2D, IndexTexture[1]);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  gluBuild2DMipmaps(GL_TEXTURE_2D, bpp, width, height, type, GL_UNSIGNED_BYTE, data);
+  // texture with mip-map
+  glBindTexture(GL_TEXTURE_2D, IndexTexture[2]);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   gluBuild2DMipmaps(GL_TEXTURE_2D, bpp, width, height, type, GL_UNSIGNED_BYTE, data);
   // clear array
   if (data){
@@ -61,22 +81,42 @@ void Draw(void){
    glTranslatef(0.0, 0.0, -5.0);
    glRotatef(rAngle, 1.0, 0.0, 0.0);
    glBindTexture(GL_TEXTURE_2D, IndexTexture[0]);
-   glBegin(GL_TRIANGLES);
-     glTexCoord2f(0.5, 1.0); glVertex3f(0.0, 1.0, 0.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(0.0, -1.0, 0.577);
-     glTexCoord2f(0.0, 0.0); glVertex3f(-0.5, -1.0, -0.288);
+   glBegin(GL_QUADS);
+     glNormal3f(0.0, 0.0, 1.0);
+     glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
+     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
+     glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
 
-     glTexCoord2f(0.5, 1.0); glVertex3f(0.0, 1.0, 0.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(0.0, -1.0, 0.577);
-     glTexCoord2f(0.0, 0.0); glVertex3f(0.5, -1.0, -0.288);
+     glNormal3f(0.0, 0.0, -1.0);
+     glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
+     glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+     glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
+     glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
 
-     glTexCoord2f(0.5, 1.0); glVertex3f(0.0, 1.0, 0.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(-0.5, -1.0, -0.288);
-     glTexCoord2f(0.0, 0.0); glVertex3f(0.5, -1.0, -0.288);
+     glNormal3f(0.0, 1.0, 0.0);
+     glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+     glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, 1.0, 1.0);
+     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 1.0);
+     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
 
-     glTexCoord2f(0.5, 1.0); glVertex3f(0.0, -1.0, 0.577);
-     glTexCoord2f(1.0, 0.0); glVertex3f(-0.5, -1.0, -0.288);
-     glTexCoord2f(0.0, 0.0); glVertex3f(0.5, -1.0, -0.288);
+     glNormal3f(0.0, -1.0, 0.0);
+     glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, -1.0, -1.0);
+     glTexCoord2f(0.0, 1.0); glVertex3f(1.0, -1.0, -1.0);
+     glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+     glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
+
+     glNormal3f(1.0, 0.0, 0.0);
+     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
+     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
+     glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
+     glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+
+     glNormal3f(-1.0, 0.0, 0.0);
+     glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
+     glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
+     glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
+     glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
    glEnd();
    glutSwapBuffers();
 }
@@ -87,13 +127,29 @@ void Idle(void){
   Draw();
 }
 
+void InitGL(void){
+  // fon color
+  glClearColor(0, 0, 0, 0);
+  // depth test
+  glClearDepth(GL_TRUE);
+  glDepthFunc(GL_LEQUAL);
+  glEnable(GL_DEPTH_TEST);
+  // smoothing
+  glShadeModel(GL_SMOOTH);
+  // modificated perspective
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+  // installing fon light
+  glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
+  // installing diffuse light
+  glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+  // position of light
+  glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
+  // enable permission on light
+  glEnable(GL_LIGHT1);
+}
+
 // setting OpenGL
 void Reshape(GLsizei Width, GLsizei Height){
-  glClearColor(0, 0, 0, 0);
-  glClearDepth(GL_TRUE);
-  glDepthFunc(GL_LESS);
-  glEnable(GL_DEPTH_TEST);
-  glShadeModel(GL_SMOOTH);
   glViewport(0, 0, Width, Height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -103,6 +159,7 @@ void Reshape(GLsizei Width, GLsizei Height){
 
 int main(int argc, char *argv[]){
   // initializing and create window GLUT
+  InitGL();
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInit(&argc, argv);
   glutInitWindowSize(640, 480);
