@@ -3,8 +3,12 @@
 	<GL/glut.h>
 	<IL/il.h>
 	<IL/ilu.h>
+	<GL/glut.h>
+	<IL/il.h>
+	<IL/ilu.h>
 
 1370385653 /usr/include/GL/glut.h
+	"freeglut_std.h"
 	"freeglut_std.h"
 
 1370385653 /usr/include/GL/freeglut_std.h
@@ -14,8 +18,17 @@
 	<GL/gl.h>
 	<GL/glu.h>
 	<stdlib.h>
+	<windows.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
 
 1426114031 /usr/include/GL/gl.h
+	"gl_mangle.h"
+	<windows.h>
+	<GL/glext.h>
 	"gl_mangle.h"
 	<windows.h>
 	<GL/glext.h>
@@ -31,13 +44,27 @@
 	<stdint.h>
 	<stdint.h>
 	<inttypes.h>
+	<windows.h>
+	<stddef.h>
+	<inttypes.h>
+	<inttypes.h>
+	<inttypes.h>
+	<stdint.h>
+	<stdint.h>
+	<inttypes.h>
 
 1424883217 /usr/include/inttypes.h
 	<features.h>
 	<stdint.h>
 	<stddef.h>
+	<features.h>
+	<stdint.h>
+	<stddef.h>
 
 1424883199 /usr/include/features.h
+	<stdc-predef.h>
+	<sys/cdefs.h>
+	<gnu/stubs.h>
 	<stdc-predef.h>
 	<sys/cdefs.h>
 	<gnu/stubs.h>
@@ -48,8 +75,13 @@
 	<features.h>
 	<bits/wchar.h>
 	<bits/wordsize.h>
+	<features.h>
+	<bits/wchar.h>
+	<bits/wordsize.h>
 
 1382363599 /usr/include/GL/glu.h
+	"glu_mangle.h"
+	<GL/gl.h>
 	"glu_mangle.h"
 	<GL/gl.h>
 
@@ -67,10 +99,23 @@
 	<bits/stdlib-float.h>
 	<bits/stdlib.h>
 	<bits/stdlib-ldbl.h>
+	<features.h>
+	<stddef.h>
+	<bits/waitflags.h>
+	<bits/waitstatus.h>
+	<xlocale.h>
+	<sys/types.h>
+	<alloca.h>
+	<bits/stdlib-bsearch.h>
+	<bits/stdlib-float.h>
+	<bits/stdlib.h>
+	<bits/stdlib-ldbl.h>
 
 1424883201 /usr/include/xlocale.h
 
 1424883217 /usr/include/alloca.h
+	<features.h>
+	<stddef.h>
 	<features.h>
 	<stddef.h>
 
@@ -78,8 +123,22 @@
 	<stdio.h>
 	<limits.h>
 	<wchar.h>
+	<stdio.h>
+	<limits.h>
+	<wchar.h>
 
 1424883218 /usr/include/stdio.h
+	<features.h>
+	<stddef.h>
+	<bits/types.h>
+	<libio.h>
+	<stdarg.h>
+	<bits/stdio_lim.h>
+	<bits/sys_errlist.h>
+	<getopt.h>
+	<bits/stdio.h>
+	<bits/stdio2.h>
+	<bits/stdio-ldbl.h>
 	<features.h>
 	<stddef.h>
 	<bits/types.h>
@@ -99,14 +158,36 @@
 	<bits/stdio-lock.h>
 	<shlib-compat.h>
 	<bits/libio-ldbl.h>
+	<_G_config.h>
+	<stdarg.h>
+	<sys/cdefs.h>
+	<bits/stdio-lock.h>
+	<shlib-compat.h>
+	<bits/libio-ldbl.h>
 
 1424883218 /usr/include/_G_config.h
 	<bits/types.h>
 	<stddef.h>
 	<wchar.h>
 	<gconv.h>
+	<bits/types.h>
+	<stddef.h>
+	<wchar.h>
+	<gconv.h>
 
 1424883220 /usr/include/wchar.h
+	<features.h>
+	<stdio.h>
+	<stdarg.h>
+	<bits/wchar.h>
+	<stddef.h>
+	<wctype.h>
+	<xlocale.h>
+	<xlocale.h>
+	<xlocale.h>
+	<wctype.h>
+	<bits/wchar2.h>
+	<bits/wchar-ldbl.h>
 	<features.h>
 	<stdio.h>
 	<stdarg.h>
@@ -126,8 +207,16 @@
 	<wchar.h>
 	<endian.h>
 	<xlocale.h>
+	<features.h>
+	<bits/types.h>
+	<wchar.h>
+	<endian.h>
+	<xlocale.h>
 
 1424883219 /usr/include/endian.h
+	<features.h>
+	<bits/endian.h>
+	<bits/byteswap.h>
 	<features.h>
 	<bits/endian.h>
 	<bits/byteswap.h>
@@ -136,11 +225,19 @@
 	<features.h>
 	<wchar.h>
 	<stddef.h>
+	<features.h>
+	<wchar.h>
+	<stddef.h>
 
 1424883222 /usr/include/getopt.h
 	<ctype.h>
+	<ctype.h>
 
 1424883213 /usr/include/ctype.h
+	<features.h>
+	<bits/types.h>
+	<endian.h>
+	<xlocale.h>
 	<features.h>
 	<bits/types.h>
 	<endian.h>
@@ -152,7 +249,18 @@
 	<bits/posix1_lim.h>
 	<bits/posix2_lim.h>
 	<bits/xopen_lim.h>
+	<features.h>
+	<bits/wordsize.h>
+	<bits/posix1_lim.h>
+	<bits/posix2_lim.h>
+	<bits/xopen_lim.h>
 
 1387209253 /usr/include/IL/ilu.h
 	<IL/il.h>
+	<IL/il.h>
+
+1430129450 source:/home/jatstudio/Projects/gitglut/main.cpp
+	<GL/glut.h>
+	<IL/il.h>
+	<IL/ilu.h>
 
