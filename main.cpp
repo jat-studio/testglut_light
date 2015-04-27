@@ -2,7 +2,7 @@
 #include <IL/il.h>
 #include <IL/ilu.h>
 
-GLfloat rAngle = 0;         // rotation angle of object
+GLfloat xAngle = 0, yAngle = 0, zMove = 0; // rotation angle of object and z dimension translating
 
 GLuint  FilterTexture;      // filter of texture
 GLuint  IndexTexture[3];    // index of texture
@@ -67,63 +67,61 @@ void LoadTexture(const char* texName){
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   gluBuild2DMipmaps(GL_TEXTURE_2D, bpp, width, height, type, GL_UNSIGNED_BYTE, data);
-  // clear array
-  if (data){
-    delete [] data;
-    data = NULL;
-  }
 }
 
 // painting Scene
 void Draw(void){
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   glLoadIdentity();
-   glTranslatef(0.0, 0.0, -5.0);
-   glRotatef(rAngle, 1.0, 0.0, 0.0);
-   glBindTexture(GL_TEXTURE_2D, IndexTexture[0]);
-   glBegin(GL_QUADS);
-     glNormal3f(0.0, 0.0, 1.0);
-     glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
-     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
-     glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glLoadIdentity();
+  glTranslatef(0.0, 0.0, -5.0);
+  glRotatef(xAngle, 1.0, 0.0, 0.0);
+  glRotatef(yAngle, 0.0, 1.0, 0.0);
+  glBindTexture(GL_TEXTURE_2D, IndexTexture[0]);
+  glBegin(GL_QUADS);
+    glNormal3f(0.0, 0.0, 1.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
 
-     glNormal3f(0.0, 0.0, -1.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
-     glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
-     glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
-     glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
+    glNormal3f(0.0, 0.0, -1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
 
-     glNormal3f(0.0, 1.0, 0.0);
-     glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
-     glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, 1.0, 1.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 1.0);
-     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
+    glNormal3f(0.0, 1.0, 0.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, 1.0, 1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
 
-     glNormal3f(0.0, -1.0, 0.0);
-     glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, -1.0, -1.0);
-     glTexCoord2f(0.0, 1.0); glVertex3f(1.0, -1.0, -1.0);
-     glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
+    glNormal3f(0.0, -1.0, 0.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, -1.0, -1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(1.0, -1.0, -1.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
 
-     glNormal3f(1.0, 0.0, 0.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
-     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
-     glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
-     glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+    glNormal3f(1.0, 0.0, 0.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
 
-     glNormal3f(-1.0, 0.0, 0.0);
-     glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
-     glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
-     glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
-     glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
-   glEnd();
-   glutSwapBuffers();
+    glNormal3f(-1.0, 0.0, 0.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+  glEnd();
+  glutSwapBuffers();
+  //glEnable(GL_LIGHTING);
 }
 
 // main cycle
 void Idle(void){
-  rAngle++;
+  xAngle ++;
+  yAngle ++;
   Draw();
 }
 
