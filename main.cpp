@@ -122,7 +122,6 @@ void Draw(void){
     glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
   glEnd();
   glutSwapBuffers();
-  glEnable(GL_LIGHTING);
 }
 
 // main cycle
@@ -144,14 +143,7 @@ void Reshape(GLsizei Width, GLsizei Height){
   glShadeModel(GL_SMOOTH);
   // modificated perspective
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-  // installing fon light
-  glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
-  // installing diffuse light
-  glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
-  // position of light
-  glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
-  // enable permission on light
-  glEnable(GL_LIGHT1);
+  // window settings
   glViewport(0, 0, Width, Height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -161,14 +153,23 @@ void Reshape(GLsizei Width, GLsizei Height){
 
 int main(int argc, char *argv[]){
   // initializing and create window GLUT
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInit(&argc, argv);
   glutInitWindowSize(640, 480);
   glutInitWindowPosition(0, 0);
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutCreateWindow("Open GL Hello World!");
   // loading textures
   LoadTexture("config.bmp");
   glEnable(GL_TEXTURE_2D);
+  // installing fon light
+  glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);
+  // installing diffuse light
+  glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+  // position of light
+  glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
+  // enable permission on light
+  glEnable(GL_LIGHT1);
+  glEnable(GL_LIGHTING);
   // defining events of window
   glutDisplayFunc(Draw);
   glutIdleFunc(Idle);
@@ -176,6 +177,6 @@ int main(int argc, char *argv[]){
   // processing events of window
   glutMainLoop();
   // clear textures
-  glDeleteTextures(1, &IndexTexture[0]);
+  glDeleteTextures(3, &IndexTexture[0]);
   return 0;
 }
