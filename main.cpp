@@ -10,6 +10,7 @@ GLuint  FilterTexture = 0;  // filter of texture
 GLuint  IndexTexture[3];    // index of texture
 
 bool    light = false;              // lights on or off
+bool    blend = false;              // blending on or off
 GLfloat LightAmbient[] = {0.5, 0.5, 0.5, 1.0}; // array of ambient light
 GLfloat LightDiffuse[] = {1.0, 1.0, 1.0, 1.0}; // array of diffuse light
 GLfloat LightPosition[] = {0.5, 0.5, 0.5, 1.0}; // coordinates of light source
@@ -138,6 +139,9 @@ void Reshape(GLsizei Width, GLsizei Height){
   glDepthFunc(GL_LEQUAL);
   // smoothing
   glShadeModel(GL_SMOOTH);
+  // blending
+  glColor4f(1.0, 1.0, 1.0, 0.5); // full brightness 50% blending
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE);
   // modificated perspective
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
   // window settings
@@ -149,11 +153,14 @@ void Reshape(GLsizei Width, GLsizei Height){
 }
 
 void Keyboard(unsigned char key, int x, int y){
+  //printf("%u", key);
+  //printf("\n");
   switch (key){
     // escape
     case 27:
       glDeleteTextures(3, &IndexTexture[0]);
       glutDestroyWindow(wnd);
+    // l
     case 108:
       if (light){
         glDisable(GL_LIGHTING);
@@ -164,6 +171,7 @@ void Keyboard(unsigned char key, int x, int y){
         light = true;
       }
       break;
+    // f
     case 102:
       if (FilterTexture > 1){
         FilterTexture = 0;
@@ -172,6 +180,19 @@ void Keyboard(unsigned char key, int x, int y){
         FilterTexture++;
       }
     break;
+    // l
+    case 98:
+      if (blend){
+        glDisable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        blend = false;
+      }
+      else{
+        glEnable(GL_BLEND);
+        glDisable(GL_DEPTH_TEST);
+        blend = true;
+      }
+      break;
   }
 }
 
