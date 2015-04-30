@@ -2,17 +2,14 @@
 #include <IL/il.h>
 #include <IL/ilu.h>
 
+int wnd;                    // id GLwindow
+
 GLfloat xAngle = 0, yAngle = 0, zMove = 0; // rotation angle of object and z dimension translating
 
-GLuint  FilterTexture;      // filter of texture
+GLuint  FilterTexture = 0;  // filter of texture
 GLuint  IndexTexture[3];    // index of texture
 
-bool    keys[256];          // keys of keyboard
-bool    active = true;      // application activity
-bool    fullscreen = true;
-bool    light;              // lights on or off
-bool    Lb;                 // pressed or not "L" button
-bool    Fb;                 // pressed or not "F" button
+bool    light = false;              // lights on or off
 GLfloat LightAmbient[] = {0.5, 0.5, 0.5, 1.0}; // array of ambient light
 GLfloat LightDiffuse[] = {1.0, 1.0, 1.0, 1.0}; // array of diffuse light
 GLfloat LightPosition[] = {0.5, 0.5, 0.5, 1.0}; // coordinates of light source
@@ -76,7 +73,7 @@ void Draw(void){
   glTranslatef(0.0, 0.0, -6.0);
   glRotatef(xAngle, 1.0, 0.0, 0.0);
   glRotatef(yAngle, 0.0, 1.0, 0.0);
-  glBindTexture(GL_TEXTURE_2D, IndexTexture[0]);
+  glBindTexture(GL_TEXTURE_2D, IndexTexture[FilterTexture]);
   // cube
   glBegin(GL_QUADS);
     // face
@@ -151,13 +148,40 @@ void Reshape(GLsizei Width, GLsizei Height){
   glMatrixMode(GL_MODELVIEW);
 }
 
+void Keyboard(unsigned char key, int x, int y){
+  switch (key){
+    // escape
+    case 27:
+      glDeleteTextures(3, &IndexTexture[0]);
+      glutDestroyWindow(wnd);
+    case 108:
+      if (light){
+        glDisable(GL_LIGHTING);
+        light = false;
+      }
+      else{
+        glEnable(GL_LIGHTING);
+        light = true;
+      }
+      break;
+    case 102:
+      if (FilterTexture > 1){
+        FilterTexture = 0;
+      }
+      else{
+        FilterTexture++;
+      }
+    break;
+  }
+}
+
 int main(int argc, char *argv[]){
   // initializing and create window GLUT
   glutInit(&argc, argv);
   glutInitWindowSize(1920, 1080);
   glutInitWindowPosition(0, 0);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutCreateWindow("Open GL Hello World!");
+  wnd = glutCreateWindow("Open GL Hello World!");
   // loading textures
   LoadTexture("config.bmp");
   glEnable(GL_TEXTURE_2D);
@@ -169,12 +193,11 @@ int main(int argc, char *argv[]){
   glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
   // enable permission on light
   glEnable(GL_LIGHT1);
-  glEnable(GL_LIGHTING);
   // defining events of window
   glutDisplayFunc(Draw);
   glutReshapeFunc(Reshape);
   glutIdleFunc(Idle);
-  //glutReshapeFunc(Reshape);
+  glutKeyboardFunc(Keyboard);
   // processing events of window
   glutMainLoop();
   // clear textures
