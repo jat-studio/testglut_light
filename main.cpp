@@ -54,10 +54,8 @@ void LoadTexture(const char* texName){
   glGenTextures(3, &IndexTexture[0]);
   // texture with filter on neighboring pixels
   glBindTexture(GL_TEXTURE_2D, IndexTexture[0]);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   gluBuild2DMipmaps(GL_TEXTURE_2D, bpp, width, height, type, GL_UNSIGNED_BYTE, data);
   // texture with linear filter
   glBindTexture(GL_TEXTURE_2D, IndexTexture[1]);
@@ -75,51 +73,56 @@ void LoadTexture(const char* texName){
 void Draw(void){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
-  glTranslatef(0.0, 0.0, -5.0);
-  //glRotatef(xAngle, 1.0, 0.0, 0.0);
-  //glRotatef(yAngle, 0.0, 1.0, 0.0);
+  glTranslatef(0.0, 0.0, -6.0);
+  glRotatef(xAngle, 1.0, 0.0, 0.0);
+  glRotatef(yAngle, 0.0, 1.0, 0.0);
   glBindTexture(GL_TEXTURE_2D, IndexTexture[0]);
+  // cube
   glBegin(GL_QUADS);
     // face
     glNormal3f(0.0, 0.0, 1.0);
-    glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
-    glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
-    glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
-    glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
 
     // back
     glNormal3f(0.0, 0.0, -1.0);
-    glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
-    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
-    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
-    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
 
-/*    glNormal3f(0.0, 1.0, 0.0);
-    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+    // top
+    glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, 1.0, 1.0);
     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, 1.0, 1.0);
     glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
 
+    // bottom
     glNormal3f(0.0, -1.0, 0.0);
-    glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, -1.0, -1.0);
-    glTexCoord2f(0.0, 1.0); glVertex3f(1.0, -1.0, -1.0);
-    glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
-    glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
-
-    glNormal3f(1.0, 0.0, 0.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
     glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
-    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
-    glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
-    glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, -1.0, 1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, -1.0, 1.0);
 
+    // left
     glNormal3f(-1.0, 0.0, 0.0);
     glTexCoord2f(0.0, 0.0); glVertex3f(-1.0, -1.0, -1.0);
     glTexCoord2f(1.0, 0.0); glVertex3f(-1.0, -1.0, 1.0);
     glTexCoord2f(1.0, 1.0); glVertex3f(-1.0, 1.0, 1.0);
-    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);*/
+    glTexCoord2f(0.0, 1.0); glVertex3f(-1.0, 1.0, -1.0);
+
+    // right
+    glNormal3f(1.0, 0.0, 0.0);
+    glTexCoord2f(0.0, 0.0); glVertex3f(1.0, -1.0, 1.0);
+    glTexCoord2f(1.0, 0.0); glVertex3f(1.0, -1.0, -1.0);
+    glTexCoord2f(1.0, 1.0); glVertex3f(1.0, 1.0, -1.0);
+    glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
   glEnd();
   glutSwapBuffers();
-  //glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHTING);
 }
 
 // main cycle
@@ -129,13 +132,14 @@ void Idle(void){
   Draw();
 }
 
-void InitGL(void){
+// setting OpenGL
+void Reshape(GLsizei Width, GLsizei Height){
   // fon color
   glClearColor(0, 0, 0, 0);
   // depth test
   glClearDepth(GL_TRUE);
-  glDepthFunc(GL_LEQUAL);
   glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LEQUAL);
   // smoothing
   glShadeModel(GL_SMOOTH);
   // modificated perspective
@@ -148,10 +152,6 @@ void InitGL(void){
   glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
   // enable permission on light
   glEnable(GL_LIGHT1);
-}
-
-// setting OpenGL
-void Reshape(GLsizei Width, GLsizei Height){
   glViewport(0, 0, Width, Height);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -161,7 +161,6 @@ void Reshape(GLsizei Width, GLsizei Height){
 
 int main(int argc, char *argv[]){
   // initializing and create window GLUT
-  InitGL();
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInit(&argc, argv);
   glutInitWindowSize(640, 480);
