@@ -122,6 +122,7 @@ void Draw(void){
     glTexCoord2f(0.0, 1.0); glVertex3f(1.0, 1.0, 1.0);
   glEnd();
   glutSwapBuffers();
+  glutPostRedisplay();
 }
 
 // main cycle
@@ -158,6 +159,7 @@ int main(int argc, char *argv[]){
   glutInitWindowPosition(0, 0);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutCreateWindow("Open GL Hello World!");
+  glutFullScreen();
   // loading textures
   LoadTexture("config.bmp");
   glEnable(GL_TEXTURE_2D);
@@ -173,7 +175,7 @@ int main(int argc, char *argv[]){
   // defining events of window
   glutDisplayFunc(Draw);
   glutIdleFunc(Idle);
-  glutReshapeFunc(Reshape);
+  //glutReshapeFunc(Reshape);
   // processing events of window
   glutMainLoop();
   // clear textures
