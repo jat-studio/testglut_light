@@ -55,11 +55,9 @@ void LoadTexture(const char* texName){
   ext[4] = NULL;
   if (strcmp(ext, ".bmp") == 0){
     ilLoad(IL_BMP, texName);
-    printf(ext);
   }
   if (strcmp(ext, ".tga") == 0){
     ilLoad(IL_TGA, texName);
-    printf(ext);
   }
   // processing of errors
   int err = ilGetError();
